@@ -465,7 +465,10 @@ add_file(Ctx, FileName, AddCause) ->
     end.
 
 get_filename(#module{stmt = {_, _, Pos, _}}) ->
-    element(1, Pos).
+    case FName = string:prefix(element(1, Pos), "./") of 
+        nomatch -> element(1, Pos);
+        _ -> FName
+    end.
 
 post_add_modules(Ctx0) ->
     %% Running post_expand_module here instead of at the end of
